@@ -482,6 +482,7 @@ GameObject:
   - component: {fileID: 467588567}
   - component: {fileID: 467588566}
   - component: {fileID: 467588565}
+  - component: {fileID: 467588568}
   m_Layer: 5
   m_Name: BtnPlay
   m_TagString: Untagged
@@ -553,7 +554,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 467588566}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 467588568}
+        m_TargetAssemblyTypeName: StartGame, Assembly-CSharp
+        m_MethodName: EmpezarJuego
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &467588566
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -592,6 +605,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 467588563}
   m_CullTransparentMesh: 1
+--- !u!114 &467588568
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 467588563}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95700b19591e73342a80d8bb8a6cb49c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &509069174
 GameObject:
   m_ObjectHideFlags: 0
@@ -904,7 +929,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4194309317
+    rgba: 4278195397
   m_fontColor: {r: 0.7735849, g: 0.07772863, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
