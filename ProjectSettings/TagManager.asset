@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - CameraBounding
+  - EnemyBoss
   layers:
   - Default
   - TransparentFX
@@ -13,7 +14,7 @@ TagManager:
   - Water
   - UI
   - Player
-  - 
+  - EnemyBoss
   - 
   - 
   - 
@@ -53,4 +54,10 @@ TagManager:
     locked: 0
   - name: Player
     uniqueID: 3920382901
+    locked: 0
+  - name: BuildingsNoCollision
+    uniqueID: 2902901109
+    locked: 0
+  - name: ObjectsNoCollision
+    uniqueID: 1815602211
     locked: 0

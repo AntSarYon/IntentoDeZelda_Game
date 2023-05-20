@@ -14,9 +14,9 @@ GameObject:
   - component: {fileID: 5833533573560090335}
   - component: {fileID: 5833533573560090333}
   - component: {fileID: 5833533573560090334}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: EnemyNPC
-  m_TagString: Untagged
+  m_TagString: EnemyBoss
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -172,9 +172,9 @@ GameObject:
   m_Component:
   - component: {fileID: 5833533574390264510}
   - component: {fileID: 5833533574390264509}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: HitBox
-  m_TagString: Untagged
+  m_TagString: EnemyBoss
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
