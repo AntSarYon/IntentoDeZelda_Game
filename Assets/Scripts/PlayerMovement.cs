@@ -13,14 +13,18 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D mRb;
     private Vector3 mDirection = Vector3.zero;
     private Animator mAnimator;
+    private AudioSource mAudioSource;
+
     private PlayerInput mPlayerInput;
     private Transform hitBox;
 
+    //-------------------------------------------------------------------------------------------------
     private void Start()
     {
         mRb = GetComponent<Rigidbody2D>();
         mAnimator = GetComponent<Animator>();
         mPlayerInput = GetComponent<PlayerInput>();
+        mAudioSource = GetComponent<AudioSource>();
 
         hitBox = transform.Find("HitBox");
 
@@ -28,10 +32,14 @@ public class PlayerMovement : MonoBehaviour
         
     }
 
+    //-------------------------------------------------------------------------------------------------
+
     private void OnConversationStopDelegate()
     {
         mPlayerInput.SwitchCurrentActionMap("Player");
     }
+
+    //-------------------------------------------------------------------------------------------------
 
     private void Update()
     {
@@ -47,12 +55,16 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    //-------------------------------------------------------------------------------------------------
+
     private void FixedUpdate()
     {
         mRb.MovePosition(
             transform.position + (mDirection * speed * Time.fixedDeltaTime)
         );
     }
+
+    //-------------------------------------------------------------------------------------------------
 
     public void OnMove(InputValue value)
     {
@@ -67,6 +79,8 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    //-------------------------------------------------------------------------------------------------
+
     public void OnCancel(InputValue value)
     {
         if (value.isPressed)
@@ -75,14 +89,19 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    //-------------------------------------------------------------------------------------------------
+
     public void OnAttack(InputValue value)
     {
         if (value.isPressed)
         {
             mAnimator.SetTrigger("Attack");
             hitBox.gameObject.SetActive(true);
+            mAudioSource.Play();
         }
     }
+
+    //-------------------------------------------------------------------------------------------------
 
     private void OnCollisionEnter2D(Collision2D other)
     {
@@ -93,6 +112,8 @@ public class PlayerMovement : MonoBehaviour
             ConversationManager.Instance.StartConversation(conversation);
         }
     }
+
+    //-------------------------------------------------------------------------------------------------
 
     public void DisableHitBox()
     {
