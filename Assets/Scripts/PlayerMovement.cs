@@ -2,11 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerMovement : MonoBehaviour
 {
+    private GameManager gameManager;
+
     //Velocidad
     [SerializeField]
     private float speed = 4f;
@@ -17,11 +20,22 @@ public class PlayerMovement : MonoBehaviour
     private AudioSource mAudioSource;
     private PlayerInput mPlayerInput;
 
+    //Lista de Clips de voz
+    [SerializeField] private List<AudioClip> listaVoces;
+
     //Direccion de movimiento
     private Vector3 mDirection = Vector3.zero;
 
     //Transform del Hitbox
     private Transform hitBox;
+
+    //Flags de Estado
+    private bool isTalking;
+
+    private void Awake()
+    {
+        gameManager = GameManager.Instance;
+    }
 
     //-------------------------------------------------------------------------------------------------
     private void Start()
@@ -35,9 +49,10 @@ public class PlayerMovement : MonoBehaviour
         //Obtenemos referencia al HitBox Hijo
         hitBox = transform.Find("HitBox");
 
+        isTalking = false;
+
         //Declaramos el Script como Delegado del Evento OnConversationStop
         ConversationManager.Instance.OnConversationStop += OnConversationStopDelegate;
-        
     }
 
     //-------------------------------------------------------------------------------------------------
@@ -129,19 +144,55 @@ public class PlayerMovement : MonoBehaviour
 
     //-------------------------------------------------------------------------------------------------
 
+    public void OnInteract(InputValue value)
+    {
+        //Si se oprime el boton de interacción; y la iteraccion esta habilitada
+        if (value.isPressed)
+        {
+            if (gameManager.InteraccionDisponible)
+            {
+                //Cambiamos el Mapa de Acción al de Conversación
+                mPlayerInput.SwitchCurrentActionMap("Conversation");
+
+                //Hacemos que el Manager inicie dicha conversacion
+                ConversationManager.Instance.StartConversation(gameManager.ConversacionDisponible);
+
+                //Desactivamos el Flag de Interaccion, pues ya activams el dialogo
+                gameManager.InteraccionDisponible = false;
+            }
+            else
+            {
+                //Reproducimos una de sus voces de manera aleatoria
+                mAudioSource.PlayOneShot(listaVoces[UnityEngine.Random.Range(0, listaVoces.Count-1)],0.75f);
+            }
+
+        }
+    }
+
     private void OnCollisionEnter2D(Collision2D other)
     {
-        //Definimos variable para almacenar una posible conversacion
         Conversation conversation;
-
         //Si ek bjeto con el que impactamos posee una Conversacion para mostrar
         if (other.transform.TryGetComponent<Conversation>(out conversation))
         {
-            //Cambiamos el Mapa de Acción al de Conversación
-            mPlayerInput.SwitchCurrentActionMap("Conversation");
+            //Almacenamos dicha conversacion en la Variable correspondiente
+            gameManager.ConversacionDisponible = conversation;
 
-            //Hacemos que el Manager inicie dicha conversacion
-            ConversationManager.Instance.StartConversation(conversation);
+            //Activamos el Flag de DialogoDisponible
+            gameManager.InteraccionDisponible = true;
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        //Si el objeto con el que dejé de chocar era un NPC
+        if (collision.transform.CompareTag("NPC"))
+        {
+            //Desactivamos el Flag de Interaccion Disponible
+            gameManager.InteraccionDisponible = false;
+
+            //Devolvemos a Null la referencia de ConversacionDisponible
+            gameManager.ConversacionDisponible = null;
         }
     }
 

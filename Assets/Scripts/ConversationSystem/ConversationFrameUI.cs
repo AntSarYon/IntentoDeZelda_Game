@@ -7,13 +7,14 @@ using TMPro;
 
 public class ConversationFrameUI : MonoBehaviour
 {
+
     private void Start()
     {
         //Declaramos el Script como Delegado de los Eventos de Conversacion
         ConversationManager.Instance.OnConversationStart += OnConversationStartDelegate;
         ConversationManager.Instance.OnConversationNext += OnConversationNextDelegate;
         ConversationManager.Instance.OnConversationStop += OnConversationStopDelegate;
-        
+
         //Desactivamos el Objeto de UI, pues inicialmente no existirá ningún dialogo abierto
         transform.gameObject.SetActive(false);
     }
@@ -23,7 +24,7 @@ public class ConversationFrameUI : MonoBehaviour
 
     private void OnConversationStartDelegate(Interaction interaction)
     {
-        //Activamos los objetos de UI
+        //Activamos el Cuadro de Dialogo de la UI
         transform.gameObject.SetActive(true);
 
         //Actualizmaos los datos de la (primera) interaccion
