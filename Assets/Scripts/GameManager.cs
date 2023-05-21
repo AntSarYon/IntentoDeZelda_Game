@@ -8,8 +8,11 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
+    //Variables para controlar Vida del jugador
+    private bool jugadorVivo;
     private int corazonesJugador;
 
+    //Variables para controlar la sinteraaciones y cuadros de dialogo
     private bool interaccionDisponible;
     private Conversation conversacionDisponible;
 
@@ -19,6 +22,7 @@ public class GameManager : MonoBehaviour
     //GETTERS Y SETTERS
     public bool InteraccionDisponible { get => interaccionDisponible; set => interaccionDisponible = value; }
     public Conversation ConversacionDisponible { get => conversacionDisponible; set => conversacionDisponible = value; }
+    public int CorazonesJugador { get => corazonesJugador; set => corazonesJugador = value; }
 
     //------------------------------------------------------------
 
@@ -28,14 +32,44 @@ public class GameManager : MonoBehaviour
 
         //Inicializamos las vidas del jugador a 6
         corazonesJugador = 6;
+
+        //Inicializamos el Flag de jugador Vivo como True
+        jugadorVivo = true;
     }
 
     //-----------------------------------------------------------------
+
+    private void Update()
+    {
+        ControlarEstadoDelJugador();
+
+        //Mientras el jugador este vivo...
+        if (jugadorVivo)
+        {
+            //FLUJO DE JUEGO
+        }
+
+        else
+        {
+            //GAME OVER
+
+        }
+    }
 
     public void PlayerDamage(int damage)
     {
         //Disparamos el eventoDamage con el Daño correspondiente que recibe el jugador
         OnPlayerDamage?.Invoke(damage);
+    }
+
+    //-------------------------------------------------------
+
+    private void ControlarEstadoDelJugador()
+    {
+        if (corazonesJugador == 0)
+        {
+            jugadorVivo = false;
+        }
     }
 
     //--------------------------------------------------

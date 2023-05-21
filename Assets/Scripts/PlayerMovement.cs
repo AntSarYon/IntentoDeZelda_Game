@@ -51,8 +51,17 @@ public class PlayerMovement : MonoBehaviour
 
         isTalking = false;
 
-        //Declaramos el Script como Delegado del Evento OnConversationStop
+        //Declaramos el Script como Delegado de los Eventos Evento OnConversationStop
         ConversationManager.Instance.OnConversationStop += OnConversationStopDelegate;
+        GameManager.Instance.OnPlayerDamage += OnPlayerDamageDelegate;
+
+    }
+
+    //------------------------------------------------------------------------------
+
+    private void OnPlayerDamageDelegate(int damage)
+    {
+        print("Recibi " + damage + " de daño");
     }
 
     //-------------------------------------------------------------------------------------------------
@@ -169,6 +178,8 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    //-------------------------------------------------------------------------------------------------------
+
     private void OnCollisionEnter2D(Collision2D other)
     {
         Conversation conversation;
@@ -180,6 +191,16 @@ public class PlayerMovement : MonoBehaviour
 
             //Activamos el Flag de DialogoDisponible
             gameManager.InteraccionDisponible = true;
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.transform.CompareTag("EnemyBoss"))
+        {
+            gameManager.PlayerDamage(1);
+            //Reproducimos voz de daño
+            mAudioSource.PlayOneShot(listaVoces[UnityEngine.Random.Range(0, listaVoces.Count - 1)], 0.75f);
         }
     }
 

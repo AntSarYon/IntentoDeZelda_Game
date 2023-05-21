@@ -15241,6 +15241,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interaccionPanel: {fileID: 506572747}
+  arrCorazones:
+  - {fileID: 547986629}
+  - {fileID: 1785761120}
+  - {fileID: 2019714888}
+  - {fileID: 795426751}
+  - {fileID: 1184750238}
+  - {fileID: 1105882433}
 --- !u!1 &1105882433
 GameObject:
   m_ObjectHideFlags: 0
