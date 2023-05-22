@@ -219,6 +219,7 @@ public class PlayerMovement : MonoBehaviour
 
     //-------------------------------------------------------------------------------------------------
 
+    //Funcion llamada mediante un Evento al final de cada Animacion de Ataque
     public void DisableHitBox()
     {
         //Desactivación de la HitBox
