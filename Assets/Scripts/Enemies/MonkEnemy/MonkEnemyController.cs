@@ -14,11 +14,15 @@ public class MonkEnemyController : MonoBehaviour
 
     //Lista de Clips de Audio que usará el enemigo
     [SerializeField] private AudioClip[] clipsGolpes = new AudioClip[2];
+    [SerializeField] private AudioClip clipTierra;
 
     //Variables parametros
     [SerializeField] private float wakeDistance = 3.5f;
     [SerializeField] private float speed = 1.5f;
     [SerializeField] private float attackDistance = 0.50f;
+
+    [SerializeField] private int vida = 3;  //3 ataques para morir
+    [SerializeField] private int ataque = 1; //Atque quita 1 corazon
 
     //Posicion del Sprite en relacion con el centro del GameObject
     private Vector3 posicionRelativa;
@@ -26,12 +30,15 @@ public class MonkEnemyController : MonoBehaviour
 
     //Flags de Estado
     private bool ataqueFinalizado = false;
+    private bool hitFinalizado = false;
+    private bool vivo = true;
 
     //Variable de referencia al jugador
     [SerializeField] private Transform player;
 
     //Referencia al HitBox
     private Transform hitBox;
+    private Transform unestopableBox;
 
     //Tendremos una Maquina de Estados Finita (FSM)
     private FSM<MonkEnemyController> mFSM;
@@ -50,6 +57,10 @@ public class MonkEnemyController : MonoBehaviour
     public float AttackDistance { get => attackDistance; set => attackDistance = value; }
     public bool AtaqueFinalizado { get => ataqueFinalizado; set => ataqueFinalizado = value; }
     public Transform HitBox { get => hitBox; set => hitBox = value; }
+    public int Ataque { get => ataque; set => ataque = value; }
+    public Transform UnestopableBox { get => unestopableBox; set => unestopableBox = value; }
+    public bool HitFinalizado { get => hitFinalizado; set => hitFinalizado = value; }
+    public bool Vivo { get => vivo; set => vivo = value; }
     #endregion
     
     //-------------------------------------------------------------------------------
@@ -65,6 +76,7 @@ public class MonkEnemyController : MonoBehaviour
 
         //Obtenemos referencia al transform del HitBox
         hitBox = transform.Find("HitBox");
+        unestopableBox = transform.Find("UnestopableBox");
     }
 
     //-------------------------------------------------------------------------------
@@ -97,14 +109,33 @@ public class MonkEnemyController : MonoBehaviour
     //-------------------------------------------------------------------------
     // Funcion Evento para indicar el Fin del Ataque tras completar la animacion
 
+    public void ReducirVida()
+    {
+
+    }
+
     public void SetAttackingEnd()
     {
+        //Activamos el Flag de AtaqueFinalizado
         ataqueFinalizado = true;
     }
+
+    public void SetHitEnd()
+    {   
+        //Activamos el Flag de Daño dinalizado
+        hitFinalizado = true;
+    }
+
+    //---------------------------------------------------------------------------
 
     public void ReproducirGolpe()
     {
         //Reproducimos uno de los golpes de forma aleatoria
         mAudioSource.PlayOneShot(clipsGolpes[UnityEngine.Random.Range(0, 1)], 0.75f);
+    }
+
+    public void ReproducirAtaqueDeTierra()
+    {
+        mAudioSource.PlayOneShot(clipTierra, 0.75f);
     }
 }

@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using UnityEngine;
 
 namespace MonkEnemy
 {
     public class MonkAttackState : FSMState<MonkEnemyController>
     {
+        private int indexAtaque;
+
         public MonkAttackState(MonkEnemyController controller) : base(controller)
         {
             Transitions.Add(new FSMTransition<MonkEnemyController>(
@@ -22,11 +25,20 @@ namespace MonkEnemy
 
         public override void OnEnter()
         {
-            //Disparamos el trigger de Ataque
-            mController.MAnimator.SetTrigger("Attack");
-
+            //Disparamos uno de los eventos de Ataque de forma aleatoria
+            indexAtaque = UnityEngine.Random.Range(1, 4);
+            if (indexAtaque == 3)
+            {
+                //Activamos el UnestopableBox
+                mController.UnestopableBox.gameObject.SetActive(true);
+            }
             //Activamos el HitBox
             mController.HitBox.gameObject.SetActive(true);
+            
+            //Disparamos el Trigger para la Animacion de Ataque
+            mController.MAnimator.SetTrigger($"Attack{indexAtaque}");
+
+            
         }
 
         public override void OnExit()
