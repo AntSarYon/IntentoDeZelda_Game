@@ -16,12 +16,16 @@ public class MonkEnemyController : MonoBehaviour
     private List<AudioClip> listaClips;
 
     //Variables parametros
-    [SerializeField] private float WakeDistance = 3.5f;
-    [SerializeField] private float Speed = 1.5f;
-    [SerializeField] private float AttackDistance = 1f;
+    [SerializeField] private float wakeDistance = 3.5f;
+    [SerializeField] private float speed = 1.5f;
+    [SerializeField] private float attackDistance = 0.50f;
+
+    //Posicion del Sprite en relacion con el centro del GameObject
+    private Vector3 posicionRelativa;
+    private Vector3 distanciaRelativa = new Vector3(0, 0.86f, 0);
 
     //Flags de Estado
-    private bool AtaqueFinalizado = false;
+    private bool ataqueFinalizado = false;
 
     //Variable de referencia al jugador
     [SerializeField] private Transform player;
@@ -32,6 +36,22 @@ public class MonkEnemyController : MonoBehaviour
     //Tendremos una Maquina de Estados Finita (FSM)
     private FSM<MonkEnemyController> mFSM;
 
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    #region GETTERS Y SETTERS
+    public Transform Player { get => player; set => player = value; }
+    public float WakeDistance { get => wakeDistance; set => wakeDistance = value; }
+    public Vector3 PosicionRelativa { get => posicionRelativa; set => posicionRelativa = value; }
+    public AudioSource MAudioSource { get => mAudioSource; set => mAudioSource = value; }
+    public Animator MAnimator { get => mAnimator; set => mAnimator = value; }
+    public SpriteRenderer MSpriteRenderer { get => mSpriteRenderer; set => mSpriteRenderer = value; }
+    public Collider2D MCollider { get => mCollider; set => mCollider = value; }
+    public Rigidbody2D MRb { get => mRb; set => mRb = value; }
+    public float Speed { get => speed; set => speed = value; }
+    public float AttackDistance { get => attackDistance; set => attackDistance = value; }
+    public bool AtaqueFinalizado { get => ataqueFinalizado; set => ataqueFinalizado = value; }
+    public Transform HitBox { get => hitBox; set => hitBox = value; }
+    #endregion
+    
     //-------------------------------------------------------------------------------
 
     private void Awake()
@@ -41,6 +61,7 @@ public class MonkEnemyController : MonoBehaviour
         mRb = GetComponent<Rigidbody2D>();
         mAnimator = GetComponent<Animator>();
         mAudioSource = GetComponent<AudioSource>();
+        mCollider = GetComponent<Collider2D>();
 
         hitBox = transform.Find("HitBox");
     }
@@ -49,8 +70,19 @@ public class MonkEnemyController : MonoBehaviour
 
     private void Start()
     {
-        mFSM = new FSM<MonkEnemyController>(new MonkEnemy.MonkIdleState(this));
-        mFSM.Begin();  // prendo la máquina de estados
+        //Creamos un FSM indicando este Script como principal componente
+        mFSM = new FSM<MonkEnemyController>(
+            //El Estado inicial será IDLE
+            new MonkEnemy.MonkIdleState(this)
+            );
+
+        // Activamos la máquina de estados
+        mFSM.Begin();  
+    }
+
+    private void Update()
+    {
+        posicionRelativa = transform.position - distanciaRelativa;
     }
 
     //------------------------------------------------------------------
@@ -66,7 +98,7 @@ public class MonkEnemyController : MonoBehaviour
 
     public void SetAttackingEnd()
     {
-        AtaqueFinalizado = true;
+        ataqueFinalizado = true;
     }
 
 

@@ -6,6 +6,8 @@ namespace Enemy
 {
     public class MovingState : FSMState<EnemyController>
     {
+        //Definimos las Variables adicionales que necesitemos en cada
+        //determinado Estado
         private Vector3 mDirection;
 
         public MovingState(EnemyController controller) : base(controller)

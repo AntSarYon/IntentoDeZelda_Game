@@ -77,7 +77,10 @@ namespace Enemy
         }
         //-------------------------------------------------------
         public override void OnUpdate(float deltaTime)
-        {}
+        {
+        }
+
+        
     }
     
 }
