@@ -66,7 +66,18 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnPlayerDamageDelegate(int damage)
     {
-        print("Recibi " + damage + " de daño");
+        //Desactivación del Ataque (Porsiacaso)
+        DisableHitBox();
+
+        //Actualizamos el Flag de RecibiendoDaño
+        isBeingHurt = true;
+
+        //Activamos el Trigger de Animacion de Daño
+        mAnimator.SetTrigger("Hurt");
+
+        //Reproducimos voz de daño
+        mAudioSource.PlayOneShot(listaVoces[UnityEngine.Random.Range(0, listaVoces.Count - 1)], 0.75f);
+
     }
 
     //-------------------------------------------------------------------------------------------------
@@ -204,23 +215,45 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        //Si el Trigger con el cual entramos en contacto es un Enemigo
-        if (collision.transform.CompareTag("EnemyBoss"))
+        //Si el Trigger con el cual entramos en contacto pertenece a un Enemigo
+        if (collision.transform.CompareTag("Enemy") || collision.transform.CompareTag("EnemyAttack") || collision.transform.CompareTag("UnestopableAttack"))
         {
-            //Si no estamos atacando
+            //Definimos variable para que almacene informacion de nuestro atacante
+            MonkEnemyController atacante;
+            int puntosAtaque;
+
+            //Si la colisión que recibimos es del cuerpo del Enemigo, y no de su Hitbox
+            if (collision.transform.TryGetComponent<MonkEnemyController>(out atacante))
+            {
+                puntosAtaque = atacante.Ataque;
+            }
+            //Si no es el atacante, sino su padre
+            else 
+            {
+                //Obtenemos referencia al Padre del Hitbox
+                atacante = collision.GetComponentInParent<MonkEnemyController>();
+                puntosAtaque = atacante.Ataque;
+            }
+
+            //Luego...
+
+            //Si el impacto sucede cuando no estamos atacando
             if (!isAttacking)
             {
-                RecibirAtaque();
+                //Invocamos al evento de PlayerDamage ingresando el ataque del enemigo
+                gameManager.PlayerDamage(atacante.Ataque);
             }
+
             //Si estamos atacando, pero es un ataque impenetrable
             else if (collision.transform.CompareTag("UnestopableAttack"))
             {
-                RecibirAtaque();
+                //Invocamos al evento de PlayerDamage ingresando el ataque del enemigo
+                gameManager.PlayerDamage(atacante.Ataque);
             }
-            //Si estamos atacando, y no esta atacando, o este NO ES IMPENETRABLE
+            //Si estamos atacando, y no esta atacando, o su ataque NO ES IMPENETRABLE
             else
             {
-
+                //Hacemos daño
             }
         }
     }
@@ -242,20 +275,10 @@ public class PlayerMovement : MonoBehaviour
 
     private void RecibirAtaque()
     {
-        //Desactivación del Ataque (Porsiacaso)
-        DisableHitBox();
-
-        //Actualizamos el Flag de RecibiendoDaño
-        isBeingHurt = true;
-
-        //Activamos el Trigger de Animacion de Daño
-        mAnimator.SetTrigger("Hurt");
-
-        //Activamos el Recibimiento de daño
-        gameManager.PlayerDamage(1);
-        //Reproducimos voz de daño
-        mAudioSource.PlayOneShot(listaVoces[UnityEngine.Random.Range(0, listaVoces.Count - 1)], 0.75f);
         
+
+        
+
 
     }
 

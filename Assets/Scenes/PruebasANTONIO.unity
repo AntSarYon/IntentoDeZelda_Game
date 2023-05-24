@@ -15296,9 +15296,9 @@ GameObject:
   - component: {fileID: 1004457409}
   - component: {fileID: 1004457410}
   - component: {fileID: 1004457411}
-  m_Layer: 7
+  m_Layer: 9
   m_Name: Monk
-  m_TagString: EnemyBoss
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -15444,9 +15444,12 @@ MonoBehaviour:
   clipsGolpes:
   - {fileID: 8300000, guid: 8c4f89e63d046c74dbdb151f696de31d, type: 3}
   - {fileID: 8300000, guid: 8b80fb4a69e1bb547a8c0b1472eab37b, type: 3}
+  clipTierra: {fileID: 8300000, guid: 28c5804cd3cdec347af13d9a5778acfe, type: 3}
   wakeDistance: 3.5
   speed: 1.5
   attackDistance: 1
+  vida: 3
+  ataque: 1
   player: {fileID: 1762673862}
 --- !u!82 &1004457411
 AudioSource:
@@ -15554,9 +15557,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1039607560}
   - component: {fileID: 1039607561}
-  m_Layer: 7
+  m_Layer: 9
   m_Name: HitBox
-  m_TagString: EnemyBoss
+  m_TagString: EnemyAttack
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -16010,7 +16013,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1457779847}
   - component: {fileID: 1457779848}
-  m_Layer: 7
+  m_Layer: 9
   m_Name: UnestopableBox
   m_TagString: UnestopableAttack
   m_Icon: {fileID: 0}
@@ -16042,12 +16045,12 @@ CapsuleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: -0.84}
   m_Size: {x: 0.0001, y: 0.0001}
-  m_Direction: 0
+  m_Direction: 1
 --- !u!1 &1512982196
 GameObject:
   m_ObjectHideFlags: 0

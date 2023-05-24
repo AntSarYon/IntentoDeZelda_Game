@@ -8,6 +8,8 @@ TagManager:
   - EnemyBoss
   - NPC
   - UnestopableAttack
+  - Enemy
+  - EnemyAttack
   layers:
   - Default
   - TransparentFX
@@ -18,7 +20,7 @@ TagManager:
   - Player
   - EnemyBoss
   - NPC
-  - 
+  - Enemy
   - 
   - 
   - 
