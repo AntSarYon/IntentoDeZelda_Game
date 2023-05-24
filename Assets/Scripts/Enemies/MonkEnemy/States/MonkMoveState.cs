@@ -19,7 +19,7 @@ namespace MonkEnemy
             Transitions.Add(new FSMTransition<MonkEnemyController>(
                 isValid: () => {
 
-                    //Si la distancia entre el NPC y el jugador es mayor a la distancia minima
+                    //Si la distancia entre el NPC y el jugador es mayor a la distancia minima para despertar
                     return Vector3.Distance(
                         mController.PosicionRelativa,
                         mController.Player.position) >= mController.WakeDistance;
@@ -54,6 +54,8 @@ namespace MonkEnemy
             //Activamos el Flag de Animacion de Movimiento
             mController.MAnimator.SetBool("IsMoving", true);
 
+            //Iniciamos con el Flag de Ataque Finalizado para prevenir errores
+            mController.AtaqueFinalizado = false;
         }
 
         public override void OnExit()

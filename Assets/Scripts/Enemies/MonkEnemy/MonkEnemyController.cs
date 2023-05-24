@@ -13,7 +13,7 @@ public class MonkEnemyController : MonoBehaviour
     private AudioSource mAudioSource;
 
     //Lista de Clips de Audio que usará el enemigo
-    private List<AudioClip> listaClips;
+    [SerializeField] private AudioClip[] clipsGolpes = new AudioClip[2];
 
     //Variables parametros
     [SerializeField] private float wakeDistance = 3.5f;
@@ -63,6 +63,7 @@ public class MonkEnemyController : MonoBehaviour
         mAudioSource = GetComponent<AudioSource>();
         mCollider = GetComponent<Collider2D>();
 
+        //Obtenemos referencia al transform del HitBox
         hitBox = transform.Find("HitBox");
     }
 
@@ -101,5 +102,9 @@ public class MonkEnemyController : MonoBehaviour
         ataqueFinalizado = true;
     }
 
-
+    public void ReproducirGolpe()
+    {
+        //Reproducimos uno de los golpes de forma aleatoria
+        mAudioSource.PlayOneShot(clipsGolpes[UnityEngine.Random.Range(0, 1)], 0.75f);
+    }
 }

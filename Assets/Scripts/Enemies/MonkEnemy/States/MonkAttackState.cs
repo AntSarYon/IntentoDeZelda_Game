@@ -22,7 +22,11 @@ namespace MonkEnemy
 
         public override void OnEnter()
         {
+            //Disparamos el trigger de Ataque
             mController.MAnimator.SetTrigger("Attack");
+
+            //Activamos el HitBox
+            mController.HitBox.gameObject.SetActive(true);
         }
 
         public override void OnExit()

@@ -31,6 +31,8 @@ public class PlayerMovement : MonoBehaviour
 
     //Flags de Estado
     private bool isTalking;
+    private bool isAttacking;
+    private bool isBeingHurt;
 
     private void Awake()
     {
@@ -49,10 +51,13 @@ public class PlayerMovement : MonoBehaviour
         //Obtenemos referencia al HitBox Hijo
         hitBox = transform.Find("HitBox");
 
+        //Inicializamos Flags
         isTalking = false;
+        isAttacking = false;
+        isBeingHurt = false;
 
-        //Declaramos el Script como Delegado de los Eventos Evento OnConversationStop
-        ConversationManager.Instance.OnConversationStop += OnConversationStopDelegate;
+    //Declaramos el Script como Delegado de los Eventos Evento OnConversationStop
+    ConversationManager.Instance.OnConversationStop += OnConversationStopDelegate;
         GameManager.Instance.OnPlayerDamage += OnPlayerDamageDelegate;
 
     }
@@ -146,6 +151,9 @@ public class PlayerMovement : MonoBehaviour
             //Activamos el HitBox
             hitBox.gameObject.SetActive(true);
 
+            //Activamos el Flag de Ataque
+            isAttacking = true;
+
             //Reproducimos el sonido de ataque
             mAudioSource.Play();
         }
@@ -183,7 +191,7 @@ public class PlayerMovement : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D other)
     {
         Conversation conversation;
-        //Si ek bjeto con el que impactamos posee una Conversacion para mostrar
+        //Si el bjeto con el que impactamos posee una Conversacion para mostrar
         if (other.transform.TryGetComponent<Conversation>(out conversation))
         {
             //Almacenamos dicha conversacion en la Variable correspondiente
@@ -196,11 +204,24 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        //Si el Trigger con el cual entramos en contacto es un Enemigo
         if (collision.transform.CompareTag("EnemyBoss"))
         {
-            gameManager.PlayerDamage(1);
-            //Reproducimos voz de daño
-            mAudioSource.PlayOneShot(listaVoces[UnityEngine.Random.Range(0, listaVoces.Count - 1)], 0.75f);
+            //Si no estamos atacando
+            if (!isAttacking)
+            {
+                RecibirAtaque();
+            }
+            //Si estamos atacando, pero es un ataque impenetrable
+            else if (collision.transform.CompareTag("UnestopableAttack"))
+            {
+                RecibirAtaque();
+            }
+            //Si estamos atacando, y no esta atacando, o este NO ES IMPENETRABLE
+            else
+            {
+
+            }
         }
     }
 
@@ -219,10 +240,44 @@ public class PlayerMovement : MonoBehaviour
 
     //-------------------------------------------------------------------------------------------------
 
+    private void RecibirAtaque()
+    {
+        //Desactivación del Ataque (Porsiacaso)
+        DisableHitBox();
+
+        //Actualizamos el Flag de RecibiendoDaño
+        isBeingHurt = true;
+
+        //Activamos el Trigger de Animacion de Daño
+        mAnimator.SetTrigger("Hurt");
+
+        //Activamos el Recibimiento de daño
+        gameManager.PlayerDamage(1);
+        //Reproducimos voz de daño
+        mAudioSource.PlayOneShot(listaVoces[UnityEngine.Random.Range(0, listaVoces.Count - 1)], 0.75f);
+        
+
+    }
+
+    //------------------------------------------------------------------------------------------
+
     //Funcion llamada mediante un Evento al final de cada Animacion de Ataque
     public void DisableHitBox()
     {
         //Desactivación de la HitBox
         hitBox.gameObject.SetActive(false);
+
+        //Desactivamos el flag de Ataque
+        isAttacking = false;
+    }
+
+    //------------------------------------------------------------------------------------------
+
+    public void SetEndHurt()
+    {
+        isBeingHurt = false;
+
+        //Desactivación del Ataque (Porsiacaso)
+        DisableHitBox();
     }
 }

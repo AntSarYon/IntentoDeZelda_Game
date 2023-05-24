@@ -17,7 +17,7 @@ namespace MonkEnemy
             Transitions.Add(new FSMTransition<MonkEnemyController>(
                 isValid: () => {
 
-                    //Si la distancia entre el NPC y el jugador es menor a la distancia minima
+                    //Si la distancia entre el NPC y el jugador es menor a la distancia minima para despertar
                     return Vector3.Distance(
                         mController.PosicionRelativa,
                         mController.Player.position) <= mController.WakeDistance;
@@ -34,7 +34,7 @@ namespace MonkEnemy
             //TRANSICION AL ESTADO "ATTACK"
             Transitions.Add(new FSMTransition<MonkEnemyController>(
                 isValid: () => {
-
+                    //Si la distancia entre el NPC y el jugador es menor a la distancia minima de ataque
                     return Vector3.Distance(
                         mController.PosicionRelativa,
                         mController.Player.position) < mController.AttackDistance;
@@ -54,7 +54,7 @@ namespace MonkEnemy
             //Desactivamos el Flag de animacion de Movimiento
             mController.MAnimator.SetBool("IsMoving", false);
             
-            //Desactivamos el Flag de Ataque concluido (PORSIACASO)
+            //Iniciamos con el Flag de Ataque Finalizado para prevenir errores
             mController.AtaqueFinalizado = false;
         }
 
