@@ -12,13 +12,25 @@ public class UIController : MonoBehaviour
     //Lista que contiene las imagenes de corazones
     [SerializeField] private GameObject[] arrCorazones = new GameObject[6];
 
+    //Referencia al Panel de Ataque elegido
+    [SerializeField] private GameObject attackPanel;
+
     //---------------------------------------------------------------------------
     private void Start()
     {
-        //Desactivamos el Objeto de UI, pues inicialmente no existirá ningún dialogo abierto
+        //Desactivamos el Objeto de UI, pues inicialmente no existirï¿½ ningï¿½n dialogo abierto
         interaccionPanel.SetActive(false);
 
+        //Activamos el objeto de attack panel
+        attackPanel.SetActive(true);
+
         GameManager.Instance.OnPlayerDamage += OnPlayerDamageDelegate;
+        GameManager.Instance.OnChangeAttack += OnChangeAttackDelegate;
+    }
+
+    private void OnChangeAttackDelegate(int current){
+        print (current);
+        attackPanel.SetActive(false);
     }
 
     private void OnPlayerDamageDelegate(int damage)
@@ -27,7 +39,7 @@ public class UIController : MonoBehaviour
         int corazonesRestantes = GameManager.Instance.CorazonesJugador;
         int corazonesEliminados = 0;
 
-        //Si el daño es mayor a la cantidad de corazones restantes
+        //Si el daï¿½o es mayor a la cantidad de corazones restantes
         if (damage > corazonesRestantes)
         {
             //Recorremos la lista de corazones (De adelante hacia atras)
@@ -56,7 +68,7 @@ public class UIController : MonoBehaviour
                     //Aumentamos el contador de corazones eliminados
                     corazonesEliminados++;
 
-                    //Si el numero de corazones eliminados equivale al daño recibido
+                    //Si el numero de corazones eliminados equivale al daï¿½o recibido
                     if (corazonesEliminados == damage)
                     {
                         //Terminamos el Bucle
@@ -75,5 +87,7 @@ public class UIController : MonoBehaviour
     {
         //Mostramos o no el Panel de Interaccion en base al Flag del GameManager
         interaccionPanel.SetActive(GameManager.Instance.InteraccionDisponible);
+
+        attackPanel.SetActive(GameManager.Instance);
     }
 }
