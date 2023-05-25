@@ -28,6 +28,7 @@ public class UIController : MonoBehaviour
         //Activamos el primer ataque(default)
         arrAttacks[0].SetActive(true);
         arrAttacks[1].SetActive(false);
+        arrAttacks[2].SetActive(false);
 
         mAudioSource = GetComponent<AudioSource>();
 

@@ -173,7 +173,14 @@ public class PlayerMovement : MonoBehaviour
             }
             else
             {
+                if (gameManager.currentAttack == 1)
+                {
+                gameManager.currentAttack = 2;
+                }
+                else
+                {
                gameManager.currentAttack = 0;
+                }
             }
             //Activamos el Flag de Ataque
             gameManager.CambiarAtaque(gameManager.currentAttack);
