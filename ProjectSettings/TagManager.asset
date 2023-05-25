@@ -10,6 +10,7 @@ TagManager:
   - UnestopableAttack
   - Enemy
   - EnemyAttack
+  - Boss
   layers:
   - Default
   - TransparentFX

@@ -78,6 +78,8 @@ public class MonkEnemyController : MonoBehaviour
         mAudioSource = GetComponent<AudioSource>();
         mCollider = GetComponent<Collider2D>();
 
+        player = GameObject.Find("Player").transform;
+
         //Obtenemos referencia al transform del HitBox
         hitBox = transform.Find("HitBox");
         unestopableBox = transform.Find("UnestopableBox");

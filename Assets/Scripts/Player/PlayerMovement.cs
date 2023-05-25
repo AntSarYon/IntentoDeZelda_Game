@@ -255,14 +255,12 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        //Si el Trigger con el cual entramos en contacto pertenece a un Enemigo
-        if (collision.transform.CompareTag("EnemyAttack") || collision.transform.CompareTag("UnestopableAttack"))
+        MonkEnemyController atacante;
+        BossController bossAtacante;
+
+        //Si el atacante es un enemigo comun...
+        if (collision.transform.parent.TryGetComponent<MonkEnemyController>(out atacante))
         {
-            //Almacene informacion de nuestro atacante
-            MonkEnemyController atacante = collision.GetComponentInParent<MonkEnemyController>();
-
-            //Luego, recibiremos Daño bajo ciertas condiciones...
-
             //Si el impacto sucede cuando no estamos atacando
             if (!isAttacking)
             {
@@ -277,7 +275,16 @@ public class PlayerMovement : MonoBehaviour
                 gameManager.PlayerDamage(atacante.Ataque);
             }
         }
+        //Si el atacante es el jefe...
+        else if(collision.transform.parent.TryGetComponent<BossController>(out bossAtacante)) 
+        {
+                //No importa si hacemos parry, o no -> Nos hará daño
+                //Invocamos al evento de PlayerDamage ingresando el ataque del enemigo
+                gameManager.PlayerDamage(bossAtacante.Ataque);
+            
+        }
     }
+    
 
     private void OnCollisionExit2D(Collision2D collision)
     {
