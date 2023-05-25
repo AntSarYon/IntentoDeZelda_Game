@@ -25,6 +25,22 @@ namespace MonkEnemy
                     return new MonkIdleState(mController);
 
                 }));
+
+
+            Transitions.Add(new FSMTransition<MonkEnemyController>(
+                isValid: () => {
+
+                    //Cuando ya no le quede vida
+                    return mController.Vivo == false;
+                },
+
+                //Construccion del Sigueinte Estado, en caso se cumpla la validación anterior
+                getNextState: () => {
+
+                    //Retornamos el Estado IDLE 
+                    return new MonkDyingState(mController);
+
+                }));
         }
 
         //-----------------------------------------------------

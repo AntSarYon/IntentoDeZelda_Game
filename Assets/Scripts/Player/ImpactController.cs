@@ -36,7 +36,7 @@ public class ImpactController : MonoBehaviour
             collision.transform.GetComponent<MonkEnemyController>().ReducirVida(ataque);
 
             //Reproducimos uno de los sonidos de Impacto de espada
-            mAudioSource.PlayOneShot(sonidosImpacto[Random.Range(0, 1)], 0.90f);
+            mAudioSource.PlayOneShot(sonidosImpacto[Random.Range(0, 1)], 1);
         }
     }
 

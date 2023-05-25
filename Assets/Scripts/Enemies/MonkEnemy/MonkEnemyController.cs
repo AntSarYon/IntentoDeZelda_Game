@@ -16,6 +16,7 @@ public class MonkEnemyController : MonoBehaviour
     //Lista de Clips de Audio que usará el enemigo
     [SerializeField] private AudioClip[] clipsGolpes = new AudioClip[2];
     [SerializeField] private AudioClip clipTierra;
+    [SerializeField] private AudioClip clipMuriendo;
 
     //Variables parametros
     [SerializeField] private float wakeDistance = 3.5f;
@@ -110,9 +111,6 @@ public class MonkEnemyController : MonoBehaviour
         {
             //Desactivamos el Flag de Vivo -> "MURIO"
             vivo = false;
-
-            //Para probar, destruimos el GameObject
-            Destroy(gameObject);
         }
     }
 
@@ -155,6 +153,11 @@ public class MonkEnemyController : MonoBehaviour
         beingHit = false;
     }
 
+    public void MorirYDestruir()
+    {
+        Destroy(gameObject);
+    }
+
     //---------------------------------------------------------------------------
 
     public void ReproducirGolpe()
@@ -169,5 +172,12 @@ public class MonkEnemyController : MonoBehaviour
     {
         //Reproducimos el sonido de ataque de Tierra
         mAudioSource.PlayOneShot(clipTierra, 0.75f);
+    }
+
+    //--------------------------------------------------------------------------
+    public void ReproducirMuerte()
+    {
+        //Reproducimos el sonido de ataque de Tierra
+        mAudioSource.PlayOneShot(clipMuriendo, 0.60f);
     }
 }

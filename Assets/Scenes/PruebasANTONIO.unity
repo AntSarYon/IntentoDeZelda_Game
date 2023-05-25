@@ -15450,6 +15450,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8c4f89e63d046c74dbdb151f696de31d, type: 3}
   - {fileID: 8300000, guid: 8b80fb4a69e1bb547a8c0b1472eab37b, type: 3}
   clipTierra: {fileID: 8300000, guid: 28c5804cd3cdec347af13d9a5778acfe, type: 3}
+  clipMuriendo: {fileID: 8300000, guid: bdc4b47551c2f504ba091cfeb4c26ed1, type: 3}
   wakeDistance: 3.5
   speed: 1.5
   attackDistance: 1
