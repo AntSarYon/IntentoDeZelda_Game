@@ -15,6 +15,10 @@ public class UIController : MonoBehaviour
     //Referencia al Panel de Ataque elegido
     [SerializeField] private GameObject[] arrAttacks = new GameObject[2];
 
+    [SerializeField] private AudioClip sonidoCambioArma;
+
+    private AudioSource mAudioSource;
+
     //---------------------------------------------------------------------------
     private void Start()
     {
@@ -24,6 +28,8 @@ public class UIController : MonoBehaviour
         //Activamos el primer ataque(default)
         arrAttacks[0].SetActive(true);
         arrAttacks[1].SetActive(false);
+
+        mAudioSource = GetComponent<AudioSource>();
 
         GameManager.Instance.OnPlayerDamage += OnPlayerDamageDelegate;
         GameManager.Instance.OnChangeAttack += OnChangeAttackDelegate;
@@ -37,7 +43,7 @@ public class UIController : MonoBehaviour
             }
         //Activamos el ataque actual
         arrAttacks[current-1].SetActive(true);
-        
+        mAudioSource.PlayOneShot(sonidoCambioArma, 1.0f);        
     }
 
     private void OnPlayerDamageDelegate(int damage)

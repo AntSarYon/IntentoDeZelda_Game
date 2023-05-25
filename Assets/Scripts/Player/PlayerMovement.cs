@@ -23,6 +23,7 @@ public class PlayerMovement : MonoBehaviour
 
     //Lista de Clips de voz
     [SerializeField] private List<AudioClip> listaVoces;
+    [SerializeField] private List<AudioClip> listaGolpes;
 
     //Direccion de movimiento
     private Vector3 mDirection = Vector3.zero;
@@ -177,8 +178,6 @@ public class PlayerMovement : MonoBehaviour
             //Activamos el Flag de Ataque
             gameManager.CambiarAtaque(gameManager.currentAttack);
 
-            //Cambiamos icono
-            mAudioSource.Play();
         }
     }
 
