@@ -13,7 +13,7 @@ public class UIController : MonoBehaviour
     [SerializeField] private GameObject[] arrCorazones = new GameObject[6];
 
     //Referencia al Panel de Ataque elegido
-    [SerializeField] private GameObject attackPanel;
+    [SerializeField] private GameObject[] arrAttacks = new GameObject[2];
 
     //---------------------------------------------------------------------------
     private void Start()
@@ -21,16 +21,23 @@ public class UIController : MonoBehaviour
         //Desactivamos el Objeto de UI, pues inicialmente no existir� ning�n dialogo abierto
         interaccionPanel.SetActive(false);
 
-        //Activamos el objeto de attack panel
-        attackPanel.SetActive(true);
+        //Activamos el primer ataque(default)
+        arrAttacks[0].SetActive(true);
+        arrAttacks[1].SetActive(false);
 
         GameManager.Instance.OnPlayerDamage += OnPlayerDamageDelegate;
         GameManager.Instance.OnChangeAttack += OnChangeAttackDelegate;
     }
 
     private void OnChangeAttackDelegate(int current){
-        print (current);
-        attackPanel.SetActive(false);
+        for (int c = 0; c <= arrAttacks.Length - 1; c++)
+            {
+                //Desactivamos cada ataque
+                arrAttacks[c].SetActive(false);
+            }
+        //Activamos el ataque actual
+        arrAttacks[current-1].SetActive(true);
+        
     }
 
     private void OnPlayerDamageDelegate(int damage)
@@ -88,6 +95,5 @@ public class UIController : MonoBehaviour
         //Mostramos o no el Panel de Interaccion en base al Flag del GameManager
         interaccionPanel.SetActive(GameManager.Instance.InteraccionDisponible);
 
-        attackPanel.SetActive(GameManager.Instance);
     }
 }
