@@ -166,21 +166,19 @@ public class PlayerMovement : MonoBehaviour
         //Si se oprime el boton de cambiar arma
         if (value.isPressed)
         {
-            if (gameManager.currentAttack == 0){
-                gameManager.currentAttack = 1;
-            }
-            else
+            switch(gameManager.currentAttack)
             {
-                if (gameManager.currentAttack == 1)
-                {
-                gameManager.currentAttack = 2;
-                }
-                else
-                {
-               gameManager.currentAttack = 0;
-                }
+                case 0:
+                    gameManager.currentAttack = 1;
+                    break;
+                case 1:
+                    gameManager.currentAttack = 2;
+                    break;
+                case 2:
+                    gameManager.currentAttack = 0;
+                    break;                
             }
-            //Activamos el Flag de Ataque
+            //Evento de cambiar ataque
             gameManager.CambiarAtaque(gameManager.currentAttack);
 
         }
@@ -194,17 +192,35 @@ public class PlayerMovement : MonoBehaviour
         //Si se oprime el boton de Ataque
         if (value.isPressed)
         {
-            //Disparamos el Trigger de Attack
-            mAnimator.SetTrigger("Attack");
-
-            //Activamos el HitBox
-            hitBox.gameObject.SetActive(true);
-
+            switch(gameManager.currentAttack)
+            {
+                case 0:
+                    //Disparamos el Trigger de Attack
+                    mAnimator.SetTrigger("Attack");
+                    //Activamos el HitBox
+                    hitBox.gameObject.SetActive(true);
+                    //Reproducimos el sonido de ataque
+                    mAudioSource.Play();
+                    break;
+                case 1:
+                    //Disparamos el Trigger de Attack
+                    mAnimator.SetTrigger("Attack1");
+                    //Activamos el HitBox
+                    hitBox.gameObject.SetActive(true);
+                    //Reproducimos el sonido de ataque
+                    mAudioSource.Play();
+                    break;
+                 case 2:
+                    //Disparamos el Trigger de Attack
+                    mAnimator.SetTrigger("Attack2");
+                    //Activamos el HitBox
+                    hitBox.gameObject.SetActive(true);
+                    //Reproducimos el sonido de ataque
+                    mAudioSource.Play();
+                    break;               
+            }
             //Activamos el Flag de Ataque
             isAttacking = true;
-
-            //Reproducimos el sonido de ataque
-            mAudioSource.Play();
         }
     }
 
