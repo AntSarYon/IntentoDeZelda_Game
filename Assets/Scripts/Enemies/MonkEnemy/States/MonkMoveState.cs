@@ -45,6 +45,18 @@ namespace MonkEnemy
                 {
                     return new MonkAttackState(mController);
                 }));
+
+            Transitions.Add(new FSMTransition<MonkEnemyController>(
+                isValid: () => {
+
+                    //Si el Flag de Recibir Daño se activó
+                    return mController.BeingHit;
+                },
+
+                getNextState: () =>
+                {
+                    return new MonkHurtState(mController);
+                }));
         }
 
         //-----------------------------------------------------

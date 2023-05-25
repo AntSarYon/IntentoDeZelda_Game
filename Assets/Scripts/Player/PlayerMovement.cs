@@ -13,6 +13,7 @@ public class PlayerMovement : MonoBehaviour
     //Velocidad
     [SerializeField]
     private float speed = 4f;
+    public int Ataque { get; set; }
 
     //Referencias a componentes
     private Rigidbody2D mRb;
@@ -56,9 +57,13 @@ public class PlayerMovement : MonoBehaviour
         isAttacking = false;
         isBeingHurt = false;
 
+        //Inicializamos Ataque en 1
+        Ataque = 1;
+
     //Declaramos el Script como Delegado de los Eventos Evento OnConversationStop
     ConversationManager.Instance.OnConversationStop += OnConversationStopDelegate;
         GameManager.Instance.OnPlayerDamage += OnPlayerDamageDelegate;
+        GameManager.Instance.OnChangeAttack += OnChangeAttackDelegate;
 
     }
 
@@ -66,21 +71,27 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnPlayerDamageDelegate(int damage)
     {
-        //Desactivación del Ataque (Porsiacaso)
+        //Desactivaciï¿½n del Ataque (Porsiacaso)
         DisableHitBox();
 
-        //Actualizamos el Flag de RecibiendoDaño
+        //Actualizamos el Flag de RecibiendoDaï¿½o
         isBeingHurt = true;
 
-        //Activamos el Trigger de Animacion de Daño
+        //Activamos el Trigger de Animacion de Daï¿½o
         mAnimator.SetTrigger("Hurt");
 
-        //Reproducimos voz de daño
+        //Reproducimos voz de daï¿½o
         mAudioSource.PlayOneShot(listaVoces[UnityEngine.Random.Range(0, listaVoces.Count - 1)], 0.75f);
 
     }
 
     //-------------------------------------------------------------------------------------------------
+
+    private void OnChangeAttackDelegate(int current){
+
+    }
+
+     //-------------------------------------------------------------------------------------------------
 
     private void OnConversationStopDelegate()
     {
@@ -92,7 +103,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        //Si se está recibiendo un input de Direccion para el movimiento
+        //Si se estï¿½ recibiendo un input de Direccion para el movimiento
         if (mDirection != Vector3.zero)
         {
             //Activmaos el Flag de Animacion para Movimiento
@@ -103,7 +114,7 @@ public class PlayerMovement : MonoBehaviour
             mAnimator.SetFloat("Vertical", mDirection.y);
         }
         else
-        {   //En caso no se esté recibiendo Input de Direccion
+        {   //En caso no se estï¿½ recibiendo Input de Direccion
             //Desactivamos el Flag de Animacion -> QUIETO
             mAnimator.SetBool("IsMoving", false);
         }
@@ -113,7 +124,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //Movemos el RigidBody hacia una dirección en base al Input y la velocidad
+        //Movemos el RigidBody hacia una direcciï¿½n en base al Input y la velocidad
         mRb.MovePosition(
             transform.position + (mDirection * speed * Time.fixedDeltaTime)
         );
@@ -129,7 +140,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void OnNext(InputValue value)
     {
-        //Si se oprime el boton para pasar al siguiente diálogo
+        //Si se oprime el boton para pasar al siguiente diï¿½logo
         if (value.isPressed)
         {
             //Hacemos que el Manager de COnversacion pase a la siguente conversacion
@@ -141,7 +152,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void OnCancel(InputValue value)
     {
-        //Si se oprime el boton para detener el diálogo
+        //Si se oprime el boton para detener el diï¿½logo
         if (value.isPressed)
         {
             //Hacemos que el Manager de Conversacion detenga todo
@@ -150,6 +161,29 @@ public class PlayerMovement : MonoBehaviour
     }
 
     //-------------------------------------------------------------------------------------------------
+
+    public void OnChangeAttack(InputValue value)
+    {
+        //Si se oprime el boton de cambiar arma
+        if (value.isPressed)
+        {
+            if (gameManager.currentAttack == 1){
+                gameManager.currentAttack = 2;
+            }
+            else
+            {
+               gameManager.currentAttack = 1;
+            }
+            //Activamos el Flag de Ataque
+            gameManager.CambiarAtaque(gameManager.currentAttack);
+
+            //Cambiamos icono
+            mAudioSource.Play();
+        }
+    }
+
+    //-------------------------------------------------------------------------------------------------
+
 
     public void OnAttack(InputValue value)
     {
@@ -174,12 +208,12 @@ public class PlayerMovement : MonoBehaviour
 
     public void OnInteract(InputValue value)
     {
-        //Si se oprime el boton de interacción; y la iteraccion esta habilitada
+        //Si se oprime el boton de interacciï¿½n; y la iteraccion esta habilitada
         if (value.isPressed)
         {
             if (gameManager.InteraccionDisponible)
             {
-                //Cambiamos el Mapa de Acción al de Conversación
+                //Cambiamos el Mapa de Acciï¿½n al de Conversaciï¿½n
                 mPlayerInput.SwitchCurrentActionMap("Conversation");
 
                 //Hacemos que el Manager inicie dicha conversacion
@@ -216,26 +250,12 @@ public class PlayerMovement : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         //Si el Trigger con el cual entramos en contacto pertenece a un Enemigo
-        if (collision.transform.CompareTag("Enemy") || collision.transform.CompareTag("EnemyAttack") || collision.transform.CompareTag("UnestopableAttack"))
+        if (collision.transform.CompareTag("EnemyAttack") || collision.transform.CompareTag("UnestopableAttack"))
         {
-            //Definimos variable para que almacene informacion de nuestro atacante
-            MonkEnemyController atacante;
-            int puntosAtaque;
+            //Almacene informacion de nuestro atacante
+            MonkEnemyController atacante = collision.GetComponentInParent<MonkEnemyController>();
 
-            //Si la colisión que recibimos es del cuerpo del Enemigo, y no de su Hitbox
-            if (collision.transform.TryGetComponent<MonkEnemyController>(out atacante))
-            {
-                puntosAtaque = atacante.Ataque;
-            }
-            //Si no es el atacante, sino su padre
-            else 
-            {
-                //Obtenemos referencia al Padre del Hitbox
-                atacante = collision.GetComponentInParent<MonkEnemyController>();
-                puntosAtaque = atacante.Ataque;
-            }
-
-            //Luego...
+            //Luego, recibiremos DaÃ±o bajo ciertas condiciones...
 
             //Si el impacto sucede cuando no estamos atacando
             if (!isAttacking)
@@ -250,17 +270,12 @@ public class PlayerMovement : MonoBehaviour
                 //Invocamos al evento de PlayerDamage ingresando el ataque del enemigo
                 gameManager.PlayerDamage(atacante.Ataque);
             }
-            //Si estamos atacando, y no esta atacando, o su ataque NO ES IMPENETRABLE
-            else
-            {
-                //Hacemos daño
-            }
         }
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        //Si el objeto con el que dejé de chocar era un NPC
+        //Si el objeto con el que dejï¿½ de chocar era un NPC
         if (collision.transform.CompareTag("NPC"))
         {
             //Desactivamos el Flag de Interaccion Disponible
@@ -271,23 +286,12 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    //-------------------------------------------------------------------------------------------------
-
-    private void RecibirAtaque()
-    {
-        
-
-        
-
-
-    }
-
     //------------------------------------------------------------------------------------------
 
     //Funcion llamada mediante un Evento al final de cada Animacion de Ataque
     public void DisableHitBox()
     {
-        //Desactivación de la HitBox
+        //Desactivaciï¿½n de la HitBox
         hitBox.gameObject.SetActive(false);
 
         //Desactivamos el flag de Ataque
@@ -300,7 +304,7 @@ public class PlayerMovement : MonoBehaviour
     {
         isBeingHurt = false;
 
-        //Desactivación del Ataque (Porsiacaso)
+        //Desactivaciï¿½n del Ataque (Porsiacaso)
         DisableHitBox();
     }
 }

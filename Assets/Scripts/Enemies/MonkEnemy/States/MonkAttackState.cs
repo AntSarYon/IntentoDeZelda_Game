@@ -21,7 +21,21 @@ namespace MonkEnemy
                     //Retornamos al Estado IDDLE
                     return new MonkIdleState(mController);
                 }));
+
+            Transitions.Add(new FSMTransition<MonkEnemyController>(
+                isValid: () =>
+                {
+                    //Si el Flag de Recibir Daño se activó
+                    return mController.BeingHit;
+                },
+
+                getNextState: () =>
+                {
+                    return new MonkHurtState(mController);
+                }));
         }
+
+        //-------------------------------------------------------------------
 
         public override void OnEnter()
         {
@@ -40,11 +54,15 @@ namespace MonkEnemy
 
             
         }
-
+        // - - - - - - - - - - - - - - - - - - - - - - -
         public override void OnExit()
         {
-
+            //Desactivamos los Objetos de HitBox
+            mController.HitBox.gameObject.SetActive(false);
+            mController.UnestopableBox.gameObject.SetActive(false);
         }
+
+        // - - - - - - - - - - - - - - - - - - - - - - -
 
         public override void OnUpdate(float deltaTime)
         {

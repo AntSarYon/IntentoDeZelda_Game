@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     //Variables para controlar Vida del jugador
     private bool jugadorVivo;
     private int corazonesJugador;
+    public int currentAttack;
 
     //Variables para controlar la sinteraaciones y cuadros de dialogo
     private bool interaccionDisponible;
@@ -18,6 +19,7 @@ public class GameManager : MonoBehaviour
 
     //EVENTOS
     public event UnityAction<int> OnPlayerDamage;
+    public event UnityAction<int> OnChangeAttack;
 
     //GETTERS Y SETTERS
     public bool InteraccionDisponible { get => interaccionDisponible; set => interaccionDisponible = value; }
@@ -29,6 +31,9 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         ControlarUnicaInstancia();
+
+        //ataque principal
+        currentAttack = 1;
 
         //Inicializamos las vidas del jugador a 6
         corazonesJugador = 6;
@@ -58,7 +63,7 @@ public class GameManager : MonoBehaviour
 
     public void PlayerDamage(int damage)
     {
-        //Disparamos el eventoDamage con el Daño correspondiente que recibe el jugador
+        //Disparamos el eventoDamage con el Daï¿½o correspondiente que recibe el jugador
         OnPlayerDamage?.Invoke(damage);
     }
 
@@ -87,4 +92,13 @@ public class GameManager : MonoBehaviour
             Destroy(this.gameObject);
         }
     }
+
+    //--------------------------------------------------
+
+    //Cambiar de ataque al presionar CTRL
+    public void CambiarAtaque(int current)
+    {
+        OnChangeAttack?.Invoke(current);
+    }
+
 }
