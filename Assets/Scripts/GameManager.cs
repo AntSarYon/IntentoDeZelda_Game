@@ -33,7 +33,7 @@ public class GameManager : MonoBehaviour
         ControlarUnicaInstancia();
 
         //ataque principal
-        currentAttack = 1;
+        currentAttack = 0;
 
         //Inicializamos las vidas del jugador a 6
         corazonesJugador = 6;

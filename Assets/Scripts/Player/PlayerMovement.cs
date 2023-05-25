@@ -89,7 +89,7 @@ public class PlayerMovement : MonoBehaviour
     //-------------------------------------------------------------------------------------------------
 
     private void OnChangeAttackDelegate(int current){
-
+        print("test");
     }
 
      //-------------------------------------------------------------------------------------------------
@@ -168,12 +168,12 @@ public class PlayerMovement : MonoBehaviour
         //Si se oprime el boton de cambiar arma
         if (value.isPressed)
         {
-            if (gameManager.currentAttack == 1){
-                gameManager.currentAttack = 2;
+            if (gameManager.currentAttack == 0){
+                gameManager.currentAttack = 1;
             }
             else
             {
-               gameManager.currentAttack = 1;
+               gameManager.currentAttack = 0;
             }
             //Activamos el Flag de Ataque
             gameManager.CambiarAtaque(gameManager.currentAttack);
