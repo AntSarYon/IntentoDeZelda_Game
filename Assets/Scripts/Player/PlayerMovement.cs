@@ -202,7 +202,7 @@ public class PlayerMovement : MonoBehaviour
                     //Activamos el HitBox
                     hitBox.gameObject.SetActive(true);
                     //Reproducimos el sonido de ataque
-                    mAudioSource.Play();
+                    mAudioSource.PlayOneShot(listaGolpes[0], 0.75f);
                     break;
                 case 1:
                     //Disparamos el Trigger de Attack
@@ -210,7 +210,7 @@ public class PlayerMovement : MonoBehaviour
                     //Activamos el HitBox
                     hitBox.gameObject.SetActive(true);
                     //Reproducimos el sonido de ataque
-                    mAudioSource.Play();
+                    mAudioSource.PlayOneShot(listaGolpes[1], 0.75f);
                     break;
                  case 2:
                     //Disparamos el Trigger de Attack
@@ -218,7 +218,7 @@ public class PlayerMovement : MonoBehaviour
                     //Activamos el HitBox
                     hitBox.gameObject.SetActive(true);
                     //Reproducimos el sonido de ataque
-                    mAudioSource.Play();
+                    mAudioSource.PlayOneShot(listaGolpes[2], 0.75f);
                     break;               
             }
             //Activamos el Flag de Ataque
