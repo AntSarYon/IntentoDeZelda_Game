@@ -50,6 +50,9 @@ TagManager:
   - name: Terrain
     uniqueID: 3743597789
     locked: 0
+  - name: TerrainSecondLayer
+    uniqueID: 373559675
+    locked: 0
   - name: Buildings
     uniqueID: 1118614031
     locked: 0
@@ -64,4 +67,7 @@ TagManager:
     locked: 0
   - name: ObjectsNoCollision
     uniqueID: 1815602211
+    locked: 0
+  - name: NPC
+    uniqueID: 967018235
     locked: 0
