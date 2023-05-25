@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem.XR;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class MonkEnemyController : MonoBehaviour
@@ -32,6 +33,7 @@ public class MonkEnemyController : MonoBehaviour
     private bool ataqueFinalizado = false;
     private bool hitFinalizado = false;
     private bool vivo = true;
+    private bool beingHit = false;
 
     //Variable de referencia al jugador
     [SerializeField] private Transform player;
@@ -61,6 +63,7 @@ public class MonkEnemyController : MonoBehaviour
     public Transform UnestopableBox { get => unestopableBox; set => unestopableBox = value; }
     public bool HitFinalizado { get => hitFinalizado; set => hitFinalizado = value; }
     public bool Vivo { get => vivo; set => vivo = value; }
+    public bool BeingHit { get => beingHit; set => beingHit = value; }
     #endregion
     
     //-------------------------------------------------------------------------------
@@ -90,12 +93,24 @@ public class MonkEnemyController : MonoBehaviour
             );
 
         // Activamos la máquina de estados
-        mFSM.Begin();  
+        mFSM.Begin();
+
+        //Desactivamos los HitBoxes
+        HitBox.gameObject.SetActive(false);
+        UnestopableBox.gameObject.SetActive(false);
     }
 
     private void Update()
     {
+        //Actualizamos constantemente la PosicionRelativa
         posicionRelativa = transform.position - distanciaRelativa;
+        
+        //Si la Vida del Enemigo llega a 0
+        if (vida <= 0)
+        {
+            //Desactivamos el Flag de Vivo -> "MURIO"
+            vivo = false;
+        }
     }
 
     //------------------------------------------------------------------
@@ -106,20 +121,28 @@ public class MonkEnemyController : MonoBehaviour
         mFSM.Tick(Time.fixedDeltaTime);
     }
 
-    //-------------------------------------------------------------------------
-    // Funcion Evento para indicar el Fin del Ataque tras completar la animacion
+    //-------------------------------------------------------------------
 
-    public void ReducirVida()
+    public void ReducirVida(int ataqueRecibido)
     {
+        //Reducimos la vida en base al AtaqueRecibido
+        vida -= ataqueRecibido;
 
+        //Activamos el flag de Golpe recibido
+        beingHit = true;
+        hitFinalizado = false;
     }
 
+    //-------------------------------------------------------------------------
+    // Funcion Evento para indicar el Fin del Ataque tras completar la animacion
     public void SetAttackingEnd()
     {
         //Activamos el Flag de AtaqueFinalizado
         ataqueFinalizado = true;
     }
 
+    //-------------------------------------------------------------------------
+    // Funcion Evento para indicar el Fin del Recibimiento de Daño
     public void SetHitEnd()
     {   
         //Activamos el Flag de Daño dinalizado
@@ -134,8 +157,11 @@ public class MonkEnemyController : MonoBehaviour
         mAudioSource.PlayOneShot(clipsGolpes[UnityEngine.Random.Range(0, 1)], 0.75f);
     }
 
+    //----------------------------------------------------------------------------
+
     public void ReproducirAtaqueDeTierra()
     {
+        //Reproducimos el sonido de ataque de Tierra
         mAudioSource.PlayOneShot(clipTierra, 0.75f);
     }
 }

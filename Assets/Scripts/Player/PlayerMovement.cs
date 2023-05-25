@@ -13,6 +13,7 @@ public class PlayerMovement : MonoBehaviour
     //Velocidad
     [SerializeField]
     private float speed = 4f;
+    public int Ataque { get; set; }
 
     //Referencias a componentes
     private Rigidbody2D mRb;
@@ -55,6 +56,9 @@ public class PlayerMovement : MonoBehaviour
         isTalking = false;
         isAttacking = false;
         isBeingHurt = false;
+
+        //Inicializamos Ataque en 1
+        Ataque = 1;
 
     //Declaramos el Script como Delegado de los Eventos Evento OnConversationStop
     ConversationManager.Instance.OnConversationStop += OnConversationStopDelegate;
@@ -246,26 +250,12 @@ public class PlayerMovement : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         //Si el Trigger con el cual entramos en contacto pertenece a un Enemigo
-        if (collision.transform.CompareTag("Enemy") || collision.transform.CompareTag("EnemyAttack") || collision.transform.CompareTag("UnestopableAttack"))
+        if (collision.transform.CompareTag("EnemyAttack") || collision.transform.CompareTag("UnestopableAttack"))
         {
-            //Definimos variable para que almacene informacion de nuestro atacante
-            MonkEnemyController atacante;
-            int puntosAtaque;
+            //Almacene informacion de nuestro atacante
+            MonkEnemyController atacante = collision.GetComponentInParent<MonkEnemyController>();
 
-            //Si la colisi�n que recibimos es del cuerpo del Enemigo, y no de su Hitbox
-            if (collision.transform.TryGetComponent<MonkEnemyController>(out atacante))
-            {
-                puntosAtaque = atacante.Ataque;
-            }
-            //Si no es el atacante, sino su padre
-            else 
-            {
-                //Obtenemos referencia al Padre del Hitbox
-                atacante = collision.GetComponentInParent<MonkEnemyController>();
-                puntosAtaque = atacante.Ataque;
-            }
-
-            //Luego...
+            //Luego, recibiremos Daño bajo ciertas condiciones...
 
             //Si el impacto sucede cuando no estamos atacando
             if (!isAttacking)
@@ -279,11 +269,6 @@ public class PlayerMovement : MonoBehaviour
             {
                 //Invocamos al evento de PlayerDamage ingresando el ataque del enemigo
                 gameManager.PlayerDamage(atacante.Ataque);
-            }
-            //Si estamos atacando, y no esta atacando, o su ataque NO ES IMPENETRABLE
-            else
-            {
-                //Hacemos da�o
             }
         }
     }
@@ -299,17 +284,6 @@ public class PlayerMovement : MonoBehaviour
             //Devolvemos a Null la referencia de ConversacionDisponible
             gameManager.ConversacionDisponible = null;
         }
-    }
-
-    //-------------------------------------------------------------------------------------------------
-
-    private void RecibirAtaque()
-    {
-        
-
-        
-
-
     }
 
     //------------------------------------------------------------------------------------------

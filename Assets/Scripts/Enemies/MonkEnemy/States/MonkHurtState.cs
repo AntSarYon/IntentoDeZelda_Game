@@ -14,15 +14,15 @@ namespace MonkEnemy
             Transitions.Add(new FSMTransition<MonkEnemyController>(
                 isValid: () => {
 
-                    //Condicion que debe cunplirse para efectuar la transicion
-                    return true;
+                    //Cuando el recibiminto de Daño termine
+                    return mController.HitFinalizado;
                 },
 
                 //Construccion del Sigueinte Estado, en caso se cumpla la validación anterior
                 getNextState: () => {
 
-                    //Retornamos el EstadoMoving usando su Constructor, e ingresando el controller que asignamos
-                    return new MonkMoveState(mController);
+                    //Retornamos el Estado IDLE 
+                    return new MonkIdleState(mController);
 
                 }));
         }
@@ -31,7 +31,8 @@ namespace MonkEnemy
         // Desde aqui controlamos al NPC utilizando mController
         public override void OnEnter()
         {
-
+            //Disparamos el Trigger para la Animacion de Daño
+            mController.MAnimator.SetTrigger("Hurt");
         }
 
         public override void OnExit()

@@ -13,6 +13,7 @@ namespace MonkEnemy
             //Ya se asignó el controlador y se creó la Lista vacia de transiciones
             //Ahora corresponde crearlas y añadirlas indicand el siguiente Estado
 
+            //--------------------------
             //TRANSICION AL ESTADO "MOVE"
             Transitions.Add(new FSMTransition<MonkEnemyController>(
                 isValid: () => {
@@ -31,9 +32,11 @@ namespace MonkEnemy
 
                 }));
 
+            //--------------------------
             //TRANSICION AL ESTADO "ATTACK"
             Transitions.Add(new FSMTransition<MonkEnemyController>(
-                isValid: () => {
+                isValid: () =>
+                {
                     //Si la distancia entre el NPC y el jugador es menor a la distancia minima de ataque
                     return Vector3.Distance(
                         mController.PosicionRelativa,
@@ -43,6 +46,19 @@ namespace MonkEnemy
                 getNextState: () =>
                 {
                     return new MonkAttackState(mController);
+                }));
+            //--------------------------
+            //TRANSICION AL ESTADO "HURT"
+            Transitions.Add(new FSMTransition<MonkEnemyController>(
+                isValid: () =>
+                {
+                    //Si el Flag de Recibir Daño se activó
+                    return mController.BeingHit;
+                },
+
+                getNextState: () =>
+                {
+                    return new MonkHurtState(mController);
                 }));
         }
 
