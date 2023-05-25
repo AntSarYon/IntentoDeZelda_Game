@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
-using UnityEngine.InputSystem.XR;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class MonkEnemyController : MonoBehaviour
@@ -157,7 +155,7 @@ public class MonkEnemyController : MonoBehaviour
 
     public void MorirYDestruir()
     {
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 
     //---------------------------------------------------------------------------

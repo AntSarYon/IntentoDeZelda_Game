@@ -1,8 +1,6 @@
-using System;
-using System.Collections;
+
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -298,6 +296,10 @@ public class PlayerMovement : MonoBehaviour
                 //Invocamos al evento de PlayerDamage ingresando el ataque del enemigo
                 gameManager.PlayerDamage(bossAtacante.Ataque);
             
+        }
+        else
+        {
+
         }
     }
     

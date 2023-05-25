@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -167,7 +165,7 @@ public class BossController : MonoBehaviour
 
     public void MorirYDestruir()
     {
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 
     //---------------------------------------------------------------------------
