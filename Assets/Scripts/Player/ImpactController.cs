@@ -27,7 +27,7 @@ public class ImpactController : MonoBehaviour
 
     //------------------------------------------------------------
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         //Si el HitBox entra en contacto con un Objeto etiquetado como enemigo
         if (collision.transform.CompareTag("Enemy"))

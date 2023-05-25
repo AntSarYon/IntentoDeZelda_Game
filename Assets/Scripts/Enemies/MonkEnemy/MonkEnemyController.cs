@@ -110,6 +110,9 @@ public class MonkEnemyController : MonoBehaviour
         {
             //Desactivamos el Flag de Vivo -> "MURIO"
             vivo = false;
+
+            //Para probar, destruimos el GameObject
+            Destroy(gameObject);
         }
     }
 
@@ -147,6 +150,9 @@ public class MonkEnemyController : MonoBehaviour
     {   
         //Activamos el Flag de Daño dinalizado
         hitFinalizado = true;
+
+        //Desactivamos el Flag de "Golpeado"
+        beingHit = false;
     }
 
     //---------------------------------------------------------------------------
