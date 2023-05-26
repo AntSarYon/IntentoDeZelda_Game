@@ -60,6 +60,9 @@ TagManager:
   - name: Objects
     uniqueID: 3828376197
     locked: 0
+  - name: ObjectsUnderPlayerNoCollision
+    uniqueID: 770458363
+    locked: 0
   - name: Player
     uniqueID: 3920382901
     locked: 0
