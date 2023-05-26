@@ -56,8 +56,8 @@ public class PlayerMovement : MonoBehaviour
         isAttacking = false;
         isBeingHurt = false;
 
-        //Inicializamos Ataque en 1
-        Ataque = 1;
+        //Inicializamos Ataque en 2
+        Ataque = 2;
 
     //Declaramos el Script como Delegado de los Eventos Evento OnConversationStop
     ConversationManager.Instance.OnConversationStop += OnConversationStopDelegate;
@@ -87,7 +87,17 @@ public class PlayerMovement : MonoBehaviour
     //-------------------------------------------------------------------------------------------------
 
     private void OnChangeAttackDelegate(int current){
-        print("test");
+        switch(current){
+            case 0:
+                Ataque = 2;
+                break;
+            case 1:
+                Ataque = 1;
+                break;
+            case 2:
+                Ataque = 3;
+                break;
+        }
     }
 
      //-------------------------------------------------------------------------------------------------
@@ -221,6 +231,8 @@ public class PlayerMovement : MonoBehaviour
             }
             //Activamos el Flag de Ataque
             isAttacking = true;
+            //Debug
+            print(Ataque);
         }
     }
 
