@@ -9,15 +9,12 @@ EditorBuildSettings:
     path: Assets/Scenes/Menu.unity
     guid: d9cd9e5cbbf1a274b98e71033ea02673
   - enabled: 1
-    path: Assets/Scenes/MainScene.unity
-    guid: 2cda990e2423bbf4892e6590ba056729
-  - enabled: 1
-    path: Assets/Scenes/PruebasANTONIO.unity
-    guid: 286fe701dd666d94e81e46c7c40656a3
-  - enabled: 1
-    path: Assets/Scenes/PruebasEmilio.unity
+    path: Assets/Scenes/Town.unity
     guid: ebcd0bf24bf3766479ecffa3795d7546
   - enabled: 1
     path: Assets/Scenes/FinalBossFight.unity
     guid: cc1bc89ff84325f4b80b8928cab7ae9c
+  - enabled: 1
+    path: Assets/Scenes/Credits.unity
+    guid: e851c6ec1e16bcc4c822531368d07d39
   m_configObjects: {}

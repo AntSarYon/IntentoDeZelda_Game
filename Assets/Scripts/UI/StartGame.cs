@@ -6,7 +6,7 @@ public class StartGame : MonoBehaviour
 {
     public void EmpezarJuego()
     {
-        //Cargamos la Escena de MainScene
-        SceneManager.LoadScene("PruebasEmilio");
+        //Cargamos la Escena de Town
+        SceneManager.LoadScene("Town");
     }
 }

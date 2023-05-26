@@ -1,4 +1,5 @@
 
+using System;
 using UnityEngine;
 
 public class UIController : MonoBehaviour
@@ -31,6 +32,17 @@ public class UIController : MonoBehaviour
 
         GameManager.Instance.OnPlayerDamage += OnPlayerDamageDelegate;
         GameManager.Instance.OnChangeAttack += OnChangeAttackDelegate;
+        GameManager.Instance.OnReborn += OnRebornDelegate;
+    }
+
+    private void OnRebornDelegate()
+    {
+        //Recorremos la lista de corazones (De adelante hacia atras)
+        for (int c = arrCorazones.Length - 1; c >= 0; c--)
+        {
+            //Activamos todos los corazones
+            arrCorazones[c].SetActive(true);
+        }
     }
 
     private void OnChangeAttackDelegate(int current){

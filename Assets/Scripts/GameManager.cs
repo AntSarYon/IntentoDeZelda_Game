@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.InputSystem.Controls;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -13,6 +11,10 @@ public class GameManager : MonoBehaviour
     private int corazonesJugador;
     public int currentAttack;
 
+    //Referencia al jugador
+    private GameObject jugador;
+    private Vector3 posInicio;
+
     //Variables para controlar la sinteraaciones y cuadros de dialogo
     private bool interaccionDisponible;
     private Conversation conversacionDisponible;
@@ -20,6 +22,7 @@ public class GameManager : MonoBehaviour
     //EVENTOS
     public event UnityAction<int> OnPlayerDamage;
     public event UnityAction<int> OnChangeAttack;
+    public event UnityAction OnReborn;
 
     //GETTERS Y SETTERS
     public bool InteraccionDisponible { get => interaccionDisponible; set => interaccionDisponible = value; }
@@ -30,7 +33,18 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        ControlarUnicaInstancia();
+        Instance = this;
+    }
+
+    //-----------------------------------------------------------------
+
+    private void Start()
+    {
+        //Obtenemos referencial al GameObject Jugador
+        jugador = GameObject.Find("Player");
+
+        //Añmacenamos la posicion donde inicia
+        posInicio = jugador.transform.position;
 
         //ataque principal
         currentAttack = 0;
@@ -41,8 +55,6 @@ public class GameManager : MonoBehaviour
         //Inicializamos el Flag de jugador Vivo como True
         jugadorVivo = true;
     }
-
-    //-----------------------------------------------------------------
 
     private void Update()
     {
@@ -56,9 +68,24 @@ public class GameManager : MonoBehaviour
 
         else
         {
-            //GAME OVER
+            //Actualizamos las vidas del jugador de vuelta a 6
+            corazonesJugador = 6;
+            
+            //Lo teletransportamos al punto de inicio
+            jugador.transform.position = posInicio;
+
+            //Actualizamos el Flag de Jugador vivo a True
+            jugadorVivo = true;
+
+            //Renacemos en la poiicon de inicio
+            Reborn();
 
         }
+    }
+
+    public void Reborn()
+    {
+        OnReborn?.Invoke();
     }
 
     public void PlayerDamage(int damage)

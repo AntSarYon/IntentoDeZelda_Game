@@ -6,8 +6,6 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerMovement : MonoBehaviour
 {
-    private GameManager gameManager;
-
     //Velocidad
     [SerializeField]
     private float speed = 4f;
@@ -34,11 +32,6 @@ public class PlayerMovement : MonoBehaviour
     private bool isAttacking;
     private bool isBeingHurt;
 
-    private void Awake()
-    {
-        gameManager = GameManager.Instance;
-    }
-
     //-------------------------------------------------------------------------------------------------
     private void Start()
     {
@@ -60,7 +53,7 @@ public class PlayerMovement : MonoBehaviour
         Ataque = 2;
 
     //Declaramos el Script como Delegado de los Eventos Evento OnConversationStop
-    ConversationManager.Instance.OnConversationStop += OnConversationStopDelegate;
+        ConversationManager.Instance.OnConversationStop += OnConversationStopDelegate;
         GameManager.Instance.OnPlayerDamage += OnPlayerDamageDelegate;
         GameManager.Instance.OnChangeAttack += OnChangeAttackDelegate;
 
@@ -176,20 +169,20 @@ public class PlayerMovement : MonoBehaviour
         //Si se oprime el boton de cambiar arma
         if (value.isPressed)
         {
-            switch(gameManager.currentAttack)
+            switch(GameManager.Instance.currentAttack)
             {
                 case 0:
-                    gameManager.currentAttack = 1;
+                    GameManager.Instance.currentAttack = 1;
                     break;
                 case 1:
-                    gameManager.currentAttack = 2;
+                    GameManager.Instance.currentAttack = 2;
                     break;
                 case 2:
-                    gameManager.currentAttack = 0;
+                    GameManager.Instance.currentAttack = 0;
                     break;                
             }
             //Evento de cambiar ataque
-            gameManager.CambiarAtaque(gameManager.currentAttack);
+            GameManager.Instance.CambiarAtaque(GameManager.Instance.currentAttack);
 
         }
     }
@@ -202,7 +195,7 @@ public class PlayerMovement : MonoBehaviour
         //Si se oprime el boton de Ataque
         if (value.isPressed)
         {
-            switch(gameManager.currentAttack)
+            switch(GameManager.Instance.currentAttack)
             {
                 case 0:
                     //Disparamos el Trigger de Attack
@@ -243,16 +236,16 @@ public class PlayerMovement : MonoBehaviour
         //Si se oprime el boton de interacci�n; y la iteraccion esta habilitada
         if (value.isPressed)
         {
-            if (gameManager.InteraccionDisponible)
+            if (GameManager.Instance.InteraccionDisponible)
             {
                 //Cambiamos el Mapa de Acci�n al de Conversaci�n
                 mPlayerInput.SwitchCurrentActionMap("Conversation");
 
                 //Hacemos que el Manager inicie dicha conversacion
-                ConversationManager.Instance.StartConversation(gameManager.ConversacionDisponible);
+                ConversationManager.Instance.StartConversation(GameManager.Instance.ConversacionDisponible);
 
                 //Desactivamos el Flag de Interaccion, pues ya activams el dialogo
-                gameManager.InteraccionDisponible = false;
+                GameManager.Instance.InteraccionDisponible = false;
             }
             else
             {
@@ -272,46 +265,44 @@ public class PlayerMovement : MonoBehaviour
         if (other.transform.TryGetComponent<Conversation>(out conversation))
         {
             //Almacenamos dicha conversacion en la Variable correspondiente
-            gameManager.ConversacionDisponible = conversation;
+            GameManager.Instance.ConversacionDisponible = conversation;
 
             //Activamos el Flag de DialogoDisponible
-            gameManager.InteraccionDisponible = true;
+            GameManager.Instance.InteraccionDisponible = true;
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        MonkEnemyController atacante;
-        BossController bossAtacante;
-
         //Si el atacante es un enemigo comun...
-        if (collision.transform.parent.TryGetComponent<MonkEnemyController>(out atacante))
+        if (collision.transform.parent.CompareTag("Enemy"))
         {
+            //Obtenemos referencia al atacante
+            MonkEnemyController atacante = collision.transform.GetComponentInParent<MonkEnemyController>();
+
             //Si el impacto sucede cuando no estamos atacando
             if (!isAttacking)
             {
                 //Invocamos al evento de PlayerDamage ingresando el ataque del enemigo
-                gameManager.PlayerDamage(atacante.Ataque);
+                GameManager.Instance.PlayerDamage(atacante.Ataque);
             }
 
             //Si estamos atacando, pero es un ataque impenetrable
             else if (collision.transform.CompareTag("UnestopableAttack"))
             {
                 //Invocamos al evento de PlayerDamage ingresando el ataque del enemigo
-                gameManager.PlayerDamage(atacante.Ataque);
+                GameManager.Instance.PlayerDamage(atacante.Ataque);
             }
         }
-        //Si el atacante es el jefe...
-        else if(collision.transform.parent.TryGetComponent<BossController>(out bossAtacante)) 
-        {
-                //No importa si hacemos parry, o no -> Nos hará daño
-                //Invocamos al evento de PlayerDamage ingresando el ataque del enemigo
-                gameManager.PlayerDamage(bossAtacante.Ataque);
-            
-        }
-        else
-        {
 
+        //Si el atacante es el Boss
+        else if (collision.transform.parent.CompareTag("Boss")) 
+        {
+            //Obtenemos referencia al Boss
+            BossController atacante = collision.transform.GetComponentInParent<BossController>();
+
+            //Invocamos al evento de daño directamente
+            GameManager.Instance.PlayerDamage(atacante.Ataque);
         }
     }
     
@@ -322,10 +313,10 @@ public class PlayerMovement : MonoBehaviour
         if (collision.transform.CompareTag("NPC"))
         {
             //Desactivamos el Flag de Interaccion Disponible
-            gameManager.InteraccionDisponible = false;
+            GameManager.Instance.InteraccionDisponible = false;
 
             //Devolvemos a Null la referencia de ConversacionDisponible
-            gameManager.ConversacionDisponible = null;
+            GameManager.Instance.ConversacionDisponible = null;
         }
     }
 

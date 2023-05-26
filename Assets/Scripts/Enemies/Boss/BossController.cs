@@ -25,8 +25,8 @@ public class BossController : MonoBehaviour
     public float Speed { get; set; } = 1f;
     public float AttackDistance { get; set; } = 2.5f;
 
-    [HideInInspector] public int Vida { get; set; } = 12;  //3 ataques para morir
-    [HideInInspector] public int Ataque { get; set; } = 2; //Atque quita 1 corazon
+    [HideInInspector] public int Vida { get; set; } = 15;  //3 ataques para morir
+    [HideInInspector] public int Ataque { get; set; } = 1; //Atque quita 1 corazon
 
     //Contador de Ataques ejecutados
     [HideInInspector] public int AtaquesEjecutados { get; set; } = 0;

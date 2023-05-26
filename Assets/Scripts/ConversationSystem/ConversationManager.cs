@@ -25,6 +25,7 @@ public class ConversationManager : MonoBehaviour
     {
         //Asignamos el Script como Instancia
         Instance = this;
+        DontDestroyOnLoad(this);
     }
 
     //---------------------------------------------------------------------
