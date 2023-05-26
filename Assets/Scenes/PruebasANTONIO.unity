@@ -15761,7 +15761,10 @@ MonoBehaviour:
   - {fileID: 8300000, guid: d9ab676f20bbbf84fb43ca334dba4985, type: 3}
   - {fileID: 8300000, guid: 300818e1c33d300419a82a3f8a45e562, type: 3}
   - {fileID: 8300000, guid: 6f6d2daabd2bcbc4ea73739f5735975c, type: 3}
-  listaGolpes: []
+  listaGolpes:
+  - {fileID: 8300000, guid: 628baddb1a325784486e0cb3dda89e44, type: 3}
+  - {fileID: 8300000, guid: 67372f2ea6adc3d4cb8733b29a98c0ff, type: 3}
+  - {fileID: 8300000, guid: 7003478f7a6f5c44b9a46f7b0080c6e6, type: 3}
 --- !u!50 &1762673866
 Rigidbody2D:
   serializedVersion: 4
