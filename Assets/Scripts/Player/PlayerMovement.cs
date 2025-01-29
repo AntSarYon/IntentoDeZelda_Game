@@ -52,8 +52,14 @@ public class PlayerMovement : MonoBehaviour
         //Inicializamos Ataque en 2
         Ataque = 2;
 
-    //Declaramos el Script como Delegado de los Eventos Evento OnConversationStop
-        ConversationManager.Instance.OnConversationStop += OnConversationStopDelegate;
+        //Declaramos el Script como Delegado de los Eventos Evento OnConversationStop
+        if (ConversationManager.Instance != null)
+        {
+            ConversationManager.Instance.OnConversationStop += OnConversationStopDelegate;
+        }
+        
+
+
         GameManager.Instance.OnPlayerDamage += OnPlayerDamageDelegate;
         GameManager.Instance.OnChangeAttack += OnChangeAttackDelegate;
 
@@ -275,7 +281,7 @@ public class PlayerMovement : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         //Si el atacante es un enemigo comun...
-        if (collision.transform.parent.CompareTag("Enemy"))
+        if (collision.transform.CompareTag("Enemy"))
         {
             //Obtenemos referencia al atacante
             MonkEnemyController atacante = collision.transform.GetComponentInParent<MonkEnemyController>();
@@ -296,7 +302,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //Si el atacante es el Boss
-        else if (collision.transform.parent.CompareTag("Boss")) 
+        else if (collision.transform.CompareTag("Boss")) 
         {
             //Obtenemos referencia al Boss
             BossController atacante = collision.transform.GetComponentInParent<BossController>();
